@@ -28,7 +28,7 @@ jobs:
           cat << EOF > ~/.config/rclone/rclone.conf
           $RCLONE_CONFIG
           EOF
-      #- name: refresh-token-update
+      - name: refresh-token-update
         env:
           CLI_TOKEN: ${{ secrets.CLI_TOKEN }}
         run: |

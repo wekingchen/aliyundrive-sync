@@ -45,7 +45,7 @@ jobs:
       - name: WebDAV-Run
         env:
           ALIYUNDRIVE_REFRESH_TOKEN: ${{ secrets.ALIYUNDRIVE_REFRESH_TOKEN }}
-        run: docker run -d --name=aliyundrive-webdav --restart=unless-stopped -p 8080:8080 -v /etc/aliyundrive-webdav/:/etc/aliyundrive-webdav/ -e REFRESH_TOKEN='"$ALIYUNDRIVE_REFRESH_TOKEN"' messense/aliyundrive-webdav
+        run: docker run -d --name=aliyundrive-webdav --restart=unless-stopped -p 8080:8080 -v /etc/aliyundrive-webdav/:/etc/aliyundrive-webdav/ -e REFRESH_TOKEN=$ALIYUNDRIVE_REFRESH_TOKEN messense/aliyundrive-webdav
       - name: Rclone-Run
         run: |
           # Rclone-Run

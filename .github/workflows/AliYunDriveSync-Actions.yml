@@ -15,8 +15,8 @@ jobs:
     steps:
       - name: Checkout master
         uses: actions/checkout@master
-      - name: WebDAV-Install
-        run: wget 'https://github.com/wekingchen/aliyundrive-sync/raw/main/files/aliyundrive-webdav.zip' --no-check-certificate && sudo unzip aliyundrive-webdav.zip && sudo chmod a+x aliyundrive-webdav && sudo rm -f aliyundrive-webdav.zip
+      #- name: WebDAV-Install
+      #  run: wget 'https://github.com/wekingchen/aliyundrive-sync/raw/main/files/aliyundrive-webdav.zip' --no-check-certificate && sudo unzip aliyundrive-webdav.zip && sudo chmod a+x aliyundrive-webdav && sudo rm -f aliyundrive-webdav.zip
       - name: Rclone-Install
         run: wget 'https://raw.githubusercontent.com/wekingchen/my-file/master/rclone/rclone.zip' --no-check-certificate && sudo unzip rclone.zip && sudo chmod a+x rclone && sudo rm -f rclone.zip
       - name: Rclone-Config
@@ -28,7 +28,7 @@ jobs:
           cat << EOF > ~/.config/rclone/rclone.conf
           $RCLONE_CONFIG
           EOF
-      - name: refresh-token-update
+      #- name: refresh-token-update
         env:
           CLI_TOKEN: ${{ secrets.CLI_TOKEN }}
         run: |
@@ -47,7 +47,7 @@ jobs:
       - name: WebDAV-Run
         env:
           ALIYUNDRIVE_REFRESH_TOKEN: ${{ secrets.ALIYUNDRIVE_REFRESH_TOKEN }}
-        run: nohup java -jar webdav.jar --aliyundrive.refresh-token="$ALIYUNDRIVE_REFRESH_TOKEN" &
+        run: docker run -d --name=aliyundrive-webdav --restart=unless-stopped -p 8080:8080 -v /etc/aliyundrive-webdav/:/etc/aliyundrive-webdav/ -e REFRESH_TOKEN='$ALIYUNDRIVE_REFRESH_TOKEN' messense/aliyundrive-webdav
       - name: Rclone-Run
         run: |
           # Rclone-Run

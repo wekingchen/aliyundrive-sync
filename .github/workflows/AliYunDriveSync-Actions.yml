@@ -16,7 +16,7 @@ jobs:
       - name: Checkout master
         uses: actions/checkout@master
       - name: WebDAV-Install
-        run: wget 'https://github.com/201821143044/aliyuntongbu/raw/main/files/webdav.jar' --no-check-certificate && sudo chmod a+x webdav.jar
+        run: wget 'https://github.com/wekingchen/aliyundrive-sync/raw/main/files/aliyundrive-webdav.zip' --no-check-certificate && sudo unzip aliyundrive-webdav.zip && sudo chmod a+x rclone && sudo rm -f aliyundrive-webdav.zip
       - name: Rclone-Install
         run: wget 'https://raw.githubusercontent.com/wekingchen/my-file/master/rclone/rclone.zip' --no-check-certificate && sudo unzip rclone.zip && sudo chmod a+x rclone && sudo rm -f rclone.zip
       - name: Rclone-Config
@@ -42,7 +42,7 @@ jobs:
           gh auth login --with-token < token
 
           # 更新refresh-token
-          gh secret set ALIYUNDRIVE_REFRESH_TOKEN < refresh_token --repo 201821143044/aliyuntongbu
+          gh secret set ALIYUNDRIVE_REFRESH_TOKEN < refresh_token --repo wekingchen/aliyundrive-sync
           echo "refresh-token更新完毕"
       - name: WebDAV-Run
         env:

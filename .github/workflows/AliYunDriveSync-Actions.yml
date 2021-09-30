@@ -1,0 +1,79 @@
+name: AliYunDriveSync-Actions
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: 30 */6 * * *
+  watch:
+    types: started
+jobs:
+  run-it:
+    runs-on: ubuntu-latest
+    name: AliYunDriveSync-Actions
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+      - name: WebDAV-Install
+        run: wget 'https://github.com/201821143044/aliyuntongbu/raw/main/files/webdav.jar' --no-check-certificate && sudo chmod a+x webdav.jar
+      - name: Rclone-Install
+        run: wget 'https://raw.githubusercontent.com/wekingchen/my-file/master/rclone/rclone.zip' --no-check-certificate && sudo unzip rclone.zip && sudo chmod a+x rclone && sudo rm -f rclone.zip
+      - name: Rclone-Config
+        env:
+          RCLONE_CONFIG: ${{ secrets.RCLONE_CONFIG }}
+        run: |
+          # 写配置文件
+          mkdir -p ~/.config/rclone/
+          cat << EOF > ~/.config/rclone/rclone.conf
+          $RCLONE_CONFIG
+          EOF
+      - name: refresh-token-update
+        env:
+          CLI_TOKEN: ${{ secrets.CLI_TOKEN }}
+        run: |
+          # 获取最新refresh_token
+          ./rclone copy pan:/refresh_token ./
+
+          # 读取授权码
+          echo ${CLI_TOKEN} > token
+
+          # 登录CLI
+          gh auth login --with-token < token
+
+          # 更新refresh-token
+          gh secret set ALIYUNDRIVE_REFRESH_TOKEN < refresh_token --repo 201821143044/aliyuntongbu
+          echo "refresh-token更新完毕"
+      - name: WebDAV-Run
+        env:
+          ALIYUNDRIVE_REFRESH_TOKEN: ${{ secrets.ALIYUNDRIVE_REFRESH_TOKEN }}
+        run: nohup java -jar webdav.jar --aliyundrive.refresh-token="$ALIYUNDRIVE_REFRESH_TOKEN" &
+      - name: Rclone-Run
+        run: |
+          # Rclone-Run
+
+          # 延迟函数
+          delay()
+          {
+          random_time=$(($RANDOM % $1))
+          echo "等待 ${random_time} 分钟后开始同步"
+          for((i=1;i<=${random_time};i++));  
+          do
+          echo "倒计时 $[${random_time}-$i] 分钟"
+          sleep 1m
+          done
+          }
+
+          # 随机延迟0~15分钟后再进行操作,可自行设置时间
+          delay 1
+
+          # 更改时区
+          sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+          ./rclone sync -v pan:/public webdav:/public
+          echo "阿里云盘同步完毕"
+
+          ./rclone copy ~/.config/rclone/rclone.conf weking_dropbox:PrivateDoc/rclone/AliYunpan
+          echo "rclone配置档备份完毕"
+
+          

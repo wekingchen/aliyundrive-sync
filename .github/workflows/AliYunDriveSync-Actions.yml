@@ -15,8 +15,6 @@ jobs:
     steps:
       - name: Checkout master
         uses: actions/checkout@master
-      #- name: WebDAV-Install
-      #  run: wget 'https://github.com/wekingchen/aliyundrive-sync/raw/main/files/aliyundrive-webdav.zip' --no-check-certificate && sudo unzip aliyundrive-webdav.zip && sudo chmod a+x aliyundrive-webdav && sudo rm -f aliyundrive-webdav.zip
       - name: Rclone-Install
         run: wget 'https://raw.githubusercontent.com/wekingchen/my-file/master/rclone/rclone.zip' --no-check-certificate && sudo unzip rclone.zip && sudo chmod a+x rclone && sudo rm -f rclone.zip
       - name: Rclone-Config

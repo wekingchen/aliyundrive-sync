@@ -31,7 +31,7 @@ jobs:
           CLI_TOKEN: ${{ secrets.CLI_TOKEN }}
         run: |
           # 获取最新refresh_token
-          ./rclone copy pan:/refresh_token ./
+          ./rclone copy outlook_com:/aliyunpan/refresh_token ./
 
           # 读取授权码
           echo ${CLI_TOKEN} > token

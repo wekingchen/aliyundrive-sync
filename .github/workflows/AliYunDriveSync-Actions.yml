@@ -70,7 +70,7 @@ jobs:
           # 更改时区
           sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-          # ./rclone sync -v webdav:/public/外语动漫 pan:/public/外语动漫
+          ./rclone copy -v webdav:/"尚气与十环传奇.2021.1080p.BluRay.x264-DJYDXS.mp4" pan:/huangxi/"尚气与十环传奇/尚气与十环传奇.2021.1080p.BluRay.x264-DJYDXS.mp4"
           ./rclone sync -v pan:/public webdav:/public
           echo "阿里云盘同步完毕"
 

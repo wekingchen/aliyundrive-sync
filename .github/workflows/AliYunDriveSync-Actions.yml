@@ -70,9 +70,23 @@ jobs:
           # 更改时区
           sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-          # ./rclone sync -v webdav:/public/"外语动漫/国王排名/" pan:/public/"外语动漫/国王排名/"
-          ./rclone sync -v pan: webdav:
-          echo "阿里云盘同步完毕"
+          ./rclone sync -v pan:/public webdav:/public
+          echo "阿里云盘public同步完毕"
+          
+          ./rclone sync -v pan:/complete webdav:/complete
+          echo "阿里云盘complete同步完毕"
+          
+          ./rclone sync -v pan:/huangxi webdav:/huangxi
+          echo "阿里云盘huangxi同步完毕"
+          
+          ./rclone sync -v pan:/Kids webdav:/Kids
+          echo "阿里云盘Kids同步完毕"
+          
+          ./rclone sync -v pan:/ping webdav:/ping
+          echo "阿里云盘ping同步完毕"
+          
+          ./rclone sync -v pan:/xm webdav:/xm
+          echo "阿里云盘xm同步完毕"
 
           ./rclone copy ~/.config/rclone/rclone.conf weking_dropbox:PrivateDoc/rclone/AliYunpan
           echo "rclone配置档备份完毕"

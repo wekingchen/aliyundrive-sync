@@ -26,6 +26,7 @@ jobs:
           cat << EOF > ~/.config/rclone/rclone.conf
           $RCLONE_CONFIG
           EOF
+          
       - name: refresh-token-update
         env:
           CLI_TOKEN: ${{ secrets.CLI_TOKEN }}
@@ -33,19 +34,24 @@ jobs:
           # 获取最新refresh_vip_token
           ./rclone copy outlook_com:/aliyunpan/refresh_vip_token ./
           sed -i 's/app://g' refresh_vip_token
+          
           # 读取授权码
           echo ${CLI_TOKEN} > token
+          
           # 登录CLI
           gh auth login --with-token < token
+          
           # 更新refresh-token
           gh secret set ALIYUNVIP_REFRESH_TOKEN < refresh_vip_token --repo wekingchen/aliyundrive-sync
           echo "refresh-token更新完毕"
+          
       - name: WebDAV-Run
         env:
           ALIYUNVIP_REFRESH_TOKEN: ${{ secrets.ALIYUNVIP_REFRESH_TOKEN }}
           WEBDAV_AUTH_USER: ${{ secrets.WEBDAV_AUTH_USER }}
           WEBDAV_AUTH_PASSWORD: ${{ secrets.WEBDAV_AUTH_PASSWORD }}
         run: docker run -d --name=aliyundrive-webdav --restart=unless-stopped -p 8080:8080 -v /etc/aliyundrive-webdav/:/etc/aliyundrive-webdav/ -e REFRESH_TOKEN=$ALIYUNVIP_REFRESH_TOKEN -e WEBDAV_AUTH_USER=$WEBDAV_AUTH_USER -e WEBDAV_AUTH_PASSWORD=$WEBDAV_AUTH_PASSWORD messense/aliyundrive-webdav
+        
       - name: Rclone-Run
         run: |
           # Rclone-Run

@@ -73,7 +73,7 @@ jobs:
           ./rclone sync -v sharepoint_minjue_chenguo:/Nas_Backup webdav:/Nas_Backup
           echo "阿里云盘NAS同步完毕"
 
-          ./rclone copy /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_vip_token
+          ./rclone copyto /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_vip_token
           echo "阿里云盘refresh-token备份完毕"
 
           ./rclone copy ~/.config/rclone/rclone.conf weking_dropbox:PrivateDoc/rclone/AliYunpan

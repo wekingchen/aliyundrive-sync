@@ -89,7 +89,7 @@ jobs:
           ./rclone sync -v pan:/xm webdav:/xm
           echo "阿里云盘xm同步完毕"
 
-          ./rclone copy /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_token
+          ./rclone copyto /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_token
           echo "阿里云盘refresh-token备份完毕"
 
           ./rclone copy ~/.config/rclone/rclone.conf weking_dropbox:PrivateDoc/rclone/AliYunpan

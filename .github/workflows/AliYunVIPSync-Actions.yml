@@ -76,7 +76,7 @@ jobs:
           ./rclone copyto /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_vip_token
           echo "阿里云盘refresh-token备份完毕"
 
-          ./rclone copy ~/.config/rclone/rclone.conf weking_dropbox:PrivateDoc/rclone/AliYunpan
+          ./rclone copy ~/.config/rclone/rclone.conf weking_dropbox:PrivateDoc/rclone/AliYunpan/rclone_vip.conf
           echo "rclone配置档备份完毕"
 
       - name: Delete workflow runs

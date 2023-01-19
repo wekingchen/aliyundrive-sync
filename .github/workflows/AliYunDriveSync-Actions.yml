@@ -99,7 +99,7 @@ jobs:
           echo "rclone配置档备份完毕"
 
       - name: Delete workflow runs
-        uses: GitRML/delete-workflow-runs@main
+        uses: wekingchen/delete-workflow-runs@main
         with:
            retain_days: 7
            keep_minimum_runs: 550          

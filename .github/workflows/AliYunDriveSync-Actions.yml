@@ -32,7 +32,7 @@ jobs:
         run: |
           # 获取最新refresh_token
           ./rclone copy outlook_com:/aliyunpan/refresh_token ./
-          # sed -i 's/app://g' refresh_token
+          sed -i 's/app://g' refresh_token
 
           # 读取授权码
           echo ${CLI_TOKEN} > token
@@ -48,8 +48,7 @@ jobs:
           ALIYUNDRIVE_REFRESH_TOKEN: ${{ secrets.ALIYUNDRIVE_REFRESH_TOKEN }}
           WEBDAV_AUTH_USER: ${{ secrets.WEBDAV_AUTH_USER }}
           WEBDAV_AUTH_PASSWORD: ${{ secrets.WEBDAV_AUTH_PASSWORD }}
-        # run: docker run -d --name=aliyundrive-webdav --restart=unless-stopped -p 8080:8080 -v /etc/aliyundrive-webdav/:/etc/aliyundrive-webdav/ -e REFRESH_TOKEN=$ALIYUNDRIVE_REFRESH_TOKEN -e WEBDAV_AUTH_USER=$WEBDAV_AUTH_USER -e WEBDAV_AUTH_PASSWORD=$WEBDAV_AUTH_PASSWORD messense/aliyundrive-webdav
-        run: docker run -d --name=aliyundrive-webdav --restart=unless-stopped -p 8080:8080 -v /etc/aliyundrive-webdav/:/etc/aliyundrive-webdav/ -e REFRESH_TOKEN=$ALIYUNDRIVE_REFRESH_TOKEN -e WEBDAV_AUTH_USER=$WEBDAV_AUTH_USER -e WEBDAV_AUTH_PASSWORD=$WEBDAV_AUTH_PASSWORD messense/aliyundrive-webdav command:/usr/bin/aliyundrive-webdav --no-redirect --auto-index --workdir /etc/aliyundrive-webdav
+        run: docker run -d --name=aliyundrive-webdav --restart=unless-stopped -p 8080:8080 -v /etc/aliyundrive-webdav/:/etc/aliyundrive-webdav/ -e REFRESH_TOKEN=$ALIYUNDRIVE_REFRESH_TOKEN -e WEBDAV_AUTH_USER=$WEBDAV_AUTH_USER -e WEBDAV_AUTH_PASSWORD=$WEBDAV_AUTH_PASSWORD messense/aliyundrive-webdav
       - name: Rclone-Run
         run: |
           # Rclone-Run

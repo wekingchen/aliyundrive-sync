@@ -32,7 +32,7 @@ jobs:
         run: |
           # 获取最新refresh_token
           ./rclone copy outlook_com:/aliyunpan/refresh_token ./
-          sed -i 's/app://g' refresh_token
+          # sed -i 's/app://g' refresh_token
 
           # 读取授权码
           echo ${CLI_TOKEN} > token

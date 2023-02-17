@@ -33,7 +33,7 @@ jobs:
         run: |
           # 获取最新refresh_vip_token
           ./rclone copy outlook_com:/aliyunpan/refresh_vip_token ./
-          sed -i 's/app://g' refresh_vip_token
+          # sed -i 's/app://g' refresh_vip_token
           
           # 读取授权码
           echo ${CLI_TOKEN} > token

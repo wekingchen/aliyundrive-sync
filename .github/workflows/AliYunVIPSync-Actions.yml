@@ -70,7 +70,8 @@ jobs:
           delay 1
           # 更改时区
           sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-          ./rclone --no-update-modtime sync -v sharepoint_minjue_chenguo:/Nas_Backup webdav:/Nas_Backup
+          # ./rclone --no-update-modtime sync -v sharepoint_minjue_chenguo:/Nas_Backup webdav:/Nas_Backup
+          ./rclone sync -v sharepoint_minjue_chenguo:/Nas_Backup webdav:/Nas_Backup
           echo "阿里云盘NAS同步完毕"
 
           ./rclone copyto /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_vip_token

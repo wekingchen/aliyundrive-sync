@@ -8,6 +8,7 @@ on:
     - cron: 30 */6 * * *
   watch:
     types: started
+
 jobs:
   run-it:
     runs-on: ubuntu-latest
@@ -15,45 +16,27 @@ jobs:
     steps:
       - name: Checkout master
         uses: actions/checkout@master
+
       - name: Rclone-Install
         run: curl https://rclone.org/install.sh | sudo bash
-      - name: Rclone-Config
+
+      - name: Read Rclone config from GitHub secret
         env:
           RCLONE_CONFIG: ${{ secrets.RCLONE_CONFIG }}
         run: |
-          # 写配置文件
-          mkdir -p ~/.config/rclone/
-          cat << EOF > ~/.config/rclone/rclone.conf
-          $RCLONE_CONFIG
-          EOF
-      - name: refresh-token-update
-        env:
-          CLI_TOKEN: ${{ secrets.CLI_TOKEN }}
-        run: |
-          # 获取最新refresh_token
-          rclone copy outlook_com:/aliyunpan/refresh_token ./
-          # sed -i 's/app://g' refresh_token
+          mkdir -p ~/.config/rclone
+          echo "$RCLONE_CONFIG" > ~/.config/rclone/rclone.conf
 
-          # 读取授权码，备份授权码到云盘
-          echo ${CLI_TOKEN} > token
-          rclone copyto token weking_dropbox:PrivateDoc/rclone/CLI_TOKEN
-
-          # 登录CLI
-          gh auth login --with-token < token
-
-          # 更新refresh-token
-          gh secret set ALIYUNDRIVE_REFRESH_TOKEN < refresh_token --repo wekingchen/aliyundrive-sync
-          echo "refresh-token更新完毕"
       - name: WebDAV-Run
         env:
           ALIYUNDRIVE_REFRESH_TOKEN: ${{ secrets.ALIYUNDRIVE_REFRESH_TOKEN }}
           WEBDAV_AUTH_USER: ${{ secrets.WEBDAV_AUTH_USER }}
           WEBDAV_AUTH_PASSWORD: ${{ secrets.WEBDAV_AUTH_PASSWORD }}
         run: docker run -d --name=aliyundrive-webdav --restart=unless-stopped -p 8080:8080 -v /etc/aliyundrive-webdav/:/etc/aliyundrive-webdav/ -e REFRESH_TOKEN=$ALIYUNDRIVE_REFRESH_TOKEN -e WEBDAV_AUTH_USER=$WEBDAV_AUTH_USER -e WEBDAV_AUTH_PASSWORD=$WEBDAV_AUTH_PASSWORD messense/aliyundrive-webdav
+
       - name: Rclone-Run
         run: |
           # Rclone-Run
-
           # 延迟函数
           delay()
           {
@@ -65,10 +48,8 @@ jobs:
           sleep 1m
           done
           }
-
           # 随机延迟0~15分钟后再进行操作,可自行设置时间
           delay 1
-
           # 更改时区
           sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
@@ -89,18 +70,31 @@ jobs:
           
           rclone --no-update-modtime sync -v pan:/xm webdav:/xm
           echo "阿里云盘xm同步完毕"
-
           # rclone --no-update-modtime sync -v pan:/upload/takeout webdav:/upload/takeout
           # echo "阿里云盘upload同步完毕"
           
           rclone copyto /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_token
           echo "阿里云盘refresh-token备份完毕"
-
           rclone copy ~/.config/rclone weking_dropbox:PrivateDoc/rclone/AliYunpan
           echo "rclone配置档备份完毕"
+
+      - name: Write Rclone config to GitHub secret
+        env:
+          CLI_TOKEN: ${{ secrets.CLI_TOKEN }}
+          REPO: wekingchen/aliyundrive-sync
+        run: |
+          RCLONE_CONFIG=$(cat ~/.config/rclone/rclone.conf)
+          REFRESH_TOKEN=$(cat /etc/aliyundrive-webdav/refresh_token)
+          gh auth login --with-token <<< "${CLI_TOKEN}"
+          gh secret set RCLONE_CONFIG -b"${RCLONE_CONFIG}" --repo "${REPO}"
+          gh secret set ALIYUNDRIVE_REFRESH_TOKEN -b"${REFRESH_TOKEN}" --repo "${REPO}"
+
+          # 读取授权码并备份到云盘
+          echo ${CLI_TOKEN} > token
+          rclone copyto token weking_dropbox:PrivateDoc/rclone/CLI_TOKEN
 
       - name: Delete workflow runs
         uses: wekingchen/delete-workflow-runs@main
         with:
            retain_days: 7
-           keep_minimum_runs: 550          
+           keep_minimum_runs: 550   

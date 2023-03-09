@@ -16,7 +16,7 @@ jobs:
       - name: Checkout master
         uses: actions/checkout@master
       - name: Rclone-Install
-        run: wget 'https://raw.githubusercontent.com/wekingchen/my-file/master/rclone/rclone.zip' --no-check-certificate && sudo unzip rclone.zip && sudo chmod a+x rclone && sudo rm -f rclone.zip
+        run: curl https://rclone.org/install.sh | sudo bash
       - name: Rclone-Config
         env:
           RCLONE_CONFIG: ${{ secrets.RCLONE_CONFIG }}
@@ -31,7 +31,7 @@ jobs:
           CLI_TOKEN: ${{ secrets.CLI_TOKEN }}
         run: |
           # 获取最新refresh_token
-          ./rclone copy outlook_com:/aliyunpan/refresh_token ./
+          rclone copy outlook_com:/aliyunpan/refresh_token ./
           # sed -i 's/app://g' refresh_token
 
           # 读取授权码，备份授权码到云盘
@@ -72,31 +72,31 @@ jobs:
           # 更改时区
           sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-          ./rclone --no-update-modtime sync -v pan:/public webdav:/public
+          rclone --no-update-modtime sync -v pan:/public webdav:/public
           echo "阿里云盘public同步完毕"
           
-          ./rclone --no-update-modtime sync -v pan:/complete webdav:/complete
+          rclone --no-update-modtime sync -v pan:/complete webdav:/complete
           echo "阿里云盘complete同步完毕"
           
-          ./rclone --no-update-modtime sync -v pan:/huangxi webdav:/huangxi
+          rclone --no-update-modtime sync -v pan:/huangxi webdav:/huangxi
           echo "阿里云盘huangxi同步完毕"
           
-          ./rclone --no-update-modtime sync -v pan:/Kids webdav:/Kids
+          rclone --no-update-modtime sync -v pan:/Kids webdav:/Kids
           echo "阿里云盘Kids同步完毕"
           
-          ./rclone --no-update-modtime sync -v pan:/ping webdav:/ping
+          rclone --no-update-modtime sync -v pan:/ping webdav:/ping
           echo "阿里云盘ping同步完毕"
           
-          ./rclone --no-update-modtime sync -v pan:/xm webdav:/xm
+          rclone --no-update-modtime sync -v pan:/xm webdav:/xm
           echo "阿里云盘xm同步完毕"
 
-          # ./rclone --no-update-modtime sync -v pan:/upload/takeout webdav:/upload/takeout
+          # rclone --no-update-modtime sync -v pan:/upload/takeout webdav:/upload/takeout
           # echo "阿里云盘upload同步完毕"
           
-          ./rclone copyto /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_token
+          rclone copyto /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_token
           echo "阿里云盘refresh-token备份完毕"
 
-          ./rclone copy ~/.config/rclone weking_dropbox:PrivateDoc/rclone/AliYunpan
+          rclone copy ~/.config/rclone weking_dropbox:PrivateDoc/rclone/AliYunpan
           echo "rclone配置档备份完毕"
 
       - name: Delete workflow runs

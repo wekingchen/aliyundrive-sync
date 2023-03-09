@@ -36,7 +36,7 @@ jobs:
 
           # 读取授权码，备份授权码到云盘
           echo ${CLI_TOKEN} > token
-          rclone copyto token weking_dropbox:PrivateDoc/rclone/AliYunpan/CLI_TOKEN
+          rclone copyto token weking_dropbox:PrivateDoc/rclone/CLI_TOKEN
 
           # 登录CLI
           gh auth login --with-token < token

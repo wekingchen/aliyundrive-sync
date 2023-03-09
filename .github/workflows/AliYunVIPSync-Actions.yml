@@ -1,4 +1,4 @@
-name: AliYunVIPSync-Actions-1
+name: AliYunVIPSync-Actions
 
 on:
   push:

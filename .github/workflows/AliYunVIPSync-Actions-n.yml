@@ -70,6 +70,10 @@ jobs:
           gh auth login --with-token <<< "${CLI_TOKEN}"
           gh secret set RCLONE_CONFIG -b"${RCLONE_CONFIG}" --repo "${REPO}"
           gh secret set ALIYUNVIP_REFRESH_TOKEN -b"${REFRESH_TOKEN}" --repo "${REPO}"
+          
+          # 读取授权码并备份到云盘
+          echo ${CLI_TOKEN} > token
+          rclone copyto token weking_dropbox:PrivateDoc/rclone/CLI_TOKEN
 
       - name: Delete workflow runs
         uses: GitRML/delete-workflow-runs@main

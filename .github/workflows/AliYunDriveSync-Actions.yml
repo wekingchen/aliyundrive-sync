@@ -53,6 +53,9 @@ jobs:
           # 更改时区
           sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
+          # 去重
+          rclone dedupe --dedupe-mode newest webdav:
+
           rclone --no-update-modtime sync -v pan:/public webdav:/public
           echo "阿里云盘public同步完毕"
           
@@ -70,7 +73,8 @@ jobs:
           
           rclone --no-update-modtime sync -v pan:/xm webdav:/xm
           echo "阿里云盘xm同步完毕"
-          # rclone --no-update-modtime sync -v pan:/upload/takeout webdav:/upload/takeout
+
+          # rclone --no-update-modtime sync -v pan:/upload webdav:/upload
           # echo "阿里云盘upload同步完毕"
           
           rclone copyto /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_token

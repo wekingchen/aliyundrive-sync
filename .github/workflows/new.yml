@@ -1,0 +1,57 @@
+name: AliYunVIPSync-1111
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: 15 */6 * * *
+
+jobs:
+  run-it:
+    runs-on: ubuntu-latest
+    name: AliYunVIPSync-11111
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+
+      - name: Rclone-Install
+        run: curl https://rclone.org/install.sh | sudo bash
+
+      - name: Read Rclone config from GitHub secret
+        env:
+          RCLONE_CONFIG: ${{ secrets.RCLONE_CONFIG }}
+        run: |
+          mkdir -p ~/.config/rclone
+          echo "$RCLONE_CONFIG" > ~/.config/rclone/rclone.conf
+          
+      - name: WebDAV-Run
+        env:
+          ALIYUNVIP_REFRESH_TOKEN: ${{ secrets.ALIYUNVIP_REFRESH_TOKEN }}
+          WEBDAV_AUTH_USER: ${{ secrets.WEBDAV_AUTH_USER }}
+          WEBDAV_AUTH_PASSWORD: ${{ secrets.WEBDAV_AUTH_PASSWORD }}
+        run: docker run -d --name=aliyundrive-webdav --restart=unless-stopped -p 8080:8080 -v /etc/aliyundrive-webdav/:/etc/aliyundrive-webdav/ -e REFRESH_TOKEN=$ALIYUNVIP_REFRESH_TOKEN -e WEBDAV_AUTH_USER=$WEBDAV_AUTH_USER -e WEBDAV_AUTH_PASSWORD=$WEBDAV_AUTH_PASSWORD messense/aliyundrive-webdav /usr/bin/aliyundrive-webdav --auto-index --workdir /etc/aliyundrive-webdav --no-trash
+        
+      - name: Rclone-Run
+        run: |
+          # Rclone-Run
+          # 延迟函数
+          delay()
+          {
+          random_time=$(($RANDOM % $1))
+          echo "等待 ${random_time} 分钟后开始同步"
+          for((i=1;i<=${random_time};i++));  
+          do
+          echo "倒计时 $[${random_time}-$i] 分钟"
+          sleep 1m
+          done
+          }
+          # 随机延迟0~15分钟后再进行操作,可自行设置时间
+          delay 1
+          # 更改时区
+          sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+          # 去重
+          rclone dedupe --dedupe-mode newest webdav:"Photos/龙祥路小学"
+          echo "阿里云盘NAS去重完毕"

@@ -53,5 +53,5 @@ jobs:
           sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
           # 去重
-          rclone dedupe --dedupe-mode newest webdav:
+          rclone dedupe --dedupe-mode newest --dry-run webdav:
           echo "阿里云盘NAS去重完毕"

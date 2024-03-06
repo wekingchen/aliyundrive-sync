@@ -53,5 +53,5 @@ jobs:
           sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
           # 去重
-          rclone dedupe --dedupe-mode newest webdav:"Photos/龙祥路小学"
+          rclone dedupe --dedupe-mode newest webdav:"Nas_Backup/Photos/龙祥路小学"
           echo "阿里云盘NAS去重完毕"

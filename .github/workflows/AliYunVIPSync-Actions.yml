@@ -1,13 +1,12 @@
 name: AliYunVIPSync-Actions
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
   schedule:
     - cron: 15 */6 * * *
-  watch:
-    types: started
 
 jobs:
   run-it:

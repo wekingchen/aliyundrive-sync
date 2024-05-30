@@ -76,6 +76,7 @@ jobs:
           echo "阿里云盘xm同步完毕"
 
           # rclone --no-update-modtime sync -v pan:/upload webdav:/upload
+          rclone --no-update-modtime sync -v webdav:/upload/'庆余年' pan:'ibook/庆余年'
           # echo "阿里云盘upload同步完毕"
           
           rclone copyto /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_token

@@ -63,7 +63,7 @@ jobs:
           rclone --no-update-modtime sync -v pan:/complete webdav:/complete
           echo "阿里云盘complete同步完毕"
           
-          rclone --no-update-modtime sync -v pan:/huangxi webdav:/huangxi
+          rclone --no-update-modtime sync -v pan:/Movies webdav:/Movies
           echo "阿里云盘huangxi同步完毕"
           
           rclone --no-update-modtime sync -v pan:/Kids webdav:/Kids

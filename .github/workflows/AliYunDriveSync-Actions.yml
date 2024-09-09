@@ -57,8 +57,8 @@ jobs:
           # 去重
           rclone dedupe --dedupe-mode newest webdav:
 
-          rclone --no-update-modtime copy -v webdav:/upload/'之后' pan:/Movies
-          echo "阿里云盘public同步完毕"
+          # rclone --no-update-modtime copy -v webdav:/upload/'之后' pan:/Movies/'之后'
+          # echo "阿里云盘同步到pan完毕"
           
           rclone --no-update-modtime sync -v pan:/public webdav:/public
           echo "阿里云盘public同步完毕"

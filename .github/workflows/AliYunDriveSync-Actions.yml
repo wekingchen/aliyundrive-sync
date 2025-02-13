@@ -57,28 +57,28 @@ jobs:
           # 去重
           rclone dedupe --dedupe-mode newest webdav:
 
-          # rclone --no-update-modtime copy -v webdav:/upload/'之后' pan:/Movies/'之后'
-          # echo "阿里云盘同步到pan完毕"
+          # rclone --no-update-modtime copy -v webdav:/upload/'之后' pikpak:Video/Movies/'之后'
+          # echo "阿里云盘同步到pikpak完毕"
           
-          rclone --no-update-modtime sync -v pan:/public webdav:/public
+          rclone --no-update-modtime sync -v pikpak:Video/public webdav:/public
           echo "阿里云盘public同步完毕"
           
-          rclone --no-update-modtime sync -v pan:/complete webdav:/complete
+          rclone --no-update-modtime sync -v pikpak:Video/complete webdav:/complete
           echo "阿里云盘complete同步完毕"
           
-          rclone --no-update-modtime sync -v pan:/Movies webdav:/Movies
+          rclone --no-update-modtime sync -v pikpak:Video/Movies webdav:/Movies
           echo "阿里云盘Movies同步完毕"
           
-          rclone --no-update-modtime sync -v pan:/Kids webdav:/Kids
+          rclone --no-update-modtime sync -v pikpak:Video/Kids webdav:/Kids
           echo "阿里云盘Kids同步完毕"
           
-          rclone --no-update-modtime sync -v pan:/ping webdav:/ping
+          rclone --no-update-modtime sync -v pikpak:Video/ping webdav:/ping
           echo "阿里云盘ping同步完毕"
           
-          rclone --no-update-modtime sync -v pan:/xm webdav:/xm
+          rclone --no-update-modtime sync -v pikpak:Video/xm webdav:/xm
           echo "阿里云盘xm同步完毕"
 
-          # rclone --no-update-modtime sync -v pan:/upload webdav:/upload
+          # rclone --no-update-modtime sync -v pikpak:Video/upload webdav:/upload
           # echo "阿里云盘upload同步完毕"
           
           rclone copyto /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_token

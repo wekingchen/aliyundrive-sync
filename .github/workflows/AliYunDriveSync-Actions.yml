@@ -58,6 +58,8 @@ jobs:
           # 更改时区
           sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
+          rclone lsd webdav:
+
           # 去重
           rclone dedupe --dedupe-mode newest webdav:
 

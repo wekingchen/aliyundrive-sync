@@ -41,8 +41,8 @@ jobs:
             -e WEBDAV_AUTH_PASSWORD=$WEBDAV_AUTH_PASSWORD \
             messense/aliyundrive-webdav /usr/bin/aliyundrive-webdav --auto-index --workdir /etc/aliyundrive-webdav --no-trash
 
-          echo "WEBDAV_AUTH_USER:$WEBDAV_AUTH_USER"
-          echo "WEBDAV_AUTH_PASSWORD:$WEBDAV_AUTH_PASSWORD"
+          echo "WEBDAV_AUTH_USER: ${WEBDAV_AUTH_USER:0:2}****"
+          echo "WEBDAV_AUTH_PASSWORD: ${WEBDAV_AUTH_PASSWORD:0:2}****"
 
       - name: Rclone-Run
         run: |

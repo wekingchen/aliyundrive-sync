@@ -56,7 +56,7 @@ jobs:
           echo "更改时区"
           sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-          # 去重
+          echo "去重"
           rclone dedupe --dedupe-mode newest webdav:
           
           rclone sync -v sharepoint_minjue_chenguo:/Nas_Backup webdav:/Nas_Backup

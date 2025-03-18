@@ -68,22 +68,22 @@ jobs:
           fi
 
           echo "执行 rclone 远程同步任务..."
-          rclone rc sync/sync src=pikpak:Video/public dst=webdav:/public
+          rclone rc sync/sync srcFs="pikpak:Video/public" dstFs="webdav:/public"
           echo "阿里云盘 public 同步完毕"
 
-          rclone rc sync/sync src=pikpak:Video/complete dst=webdav:/complete
+          rclone rc sync/sync srcFs="pikpak:Video/complete" dstFs="webdav:/complete"
           echo "阿里云盘 complete 同步完毕"
 
-          rclone rc sync/sync src=pikpak:Video/Movies dst=webdav:/Movies
+          rclone rc sync/sync srcFs="pikpak:Video/Movies" dstFs="webdav:/Movies"
           echo "阿里云盘 Movies 同步完毕"
 
-          rclone rc sync/sync src=pikpak:Video/Kids dst=webdav:/Kids
+          rclone rc sync/sync srcFs="pikpak:Video/Kids" dstFs="webdav:/Kids"
           echo "阿里云盘 Kids 同步完毕"
 
-          rclone rc sync/sync src=pikpak:Video/ping dst=webdav:/ping
+          rclone rc sync/sync srcFs="pikpak:Video/ping" dstFs="webdav:/ping"
           echo "阿里云盘 ping 同步完毕"
 
-          rclone rc sync/sync src=pikpak:Video/xm dst=webdav:/xm
+          rclone rc sync/sync srcFs="pikpak:Video/xm" dstFs="webdav:/xm"
           echo "阿里云盘 xm 同步完毕"
 
           # 备份 refresh_token

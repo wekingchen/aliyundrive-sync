@@ -55,35 +55,26 @@ jobs:
 
       - name: Rclone-Run
         run: |
-          echo "启动 rclone 远程控制守护进程 (rcd)..."
-          nohup rclone rcd --rc-web-gui --rc-no-auth --log-level INFO --rc-addr=localhost:5572 > /dev/null 2>&1 &
-          sleep 5  # 等待 rclone rcd 启动完成
+          echo "更改时区"
+          sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-          # 检查 rclone rc 是否可用
-          if curl -s http://localhost:5572/rc/noop; then
-            echo "rclone rcd 启动成功"
-          else
-            echo "rclone rcd 启动失败，退出"
-            exit 1
-          fi
-
-          echo "执行 rclone 远程同步任务..."
-          rclone rc sync/sync srcFs="pikpak:Video/public" dstFs="webdav:/public"
+          echo "执行 rclone 同步任务..."
+          rclone sync -v pikpak:Video/public webdav:/public
           echo "阿里云盘 public 同步完毕"
 
-          rclone rc sync/sync srcFs="pikpak:Video/complete" dstFs="webdav:/complete"
+          rclone sync -v pikpak:Video/complete webdav:/complete
           echo "阿里云盘 complete 同步完毕"
 
-          rclone rc sync/sync srcFs="pikpak:Video/Movies" dstFs="webdav:/Movies"
+          rclone sync -v pikpak:Video/Movies webdav:/Movies
           echo "阿里云盘 Movies 同步完毕"
 
-          rclone rc sync/sync srcFs="pikpak:Video/Kids" dstFs="webdav:/Kids"
+          rclone sync -v pikpak:Video/Kids webdav:/Kids
           echo "阿里云盘 Kids 同步完毕"
 
-          rclone rc sync/sync srcFs="pikpak:Video/ping" dstFs="webdav:/ping"
+          rclone sync -v pikpak:Video/ping webdav:/ping
           echo "阿里云盘 ping 同步完毕"
 
-          rclone rc sync/sync srcFs="pikpak:Video/xm" dstFs="webdav:/xm"
+          rclone sync -v pikpak:Video/xm webdav:/xm
           echo "阿里云盘 xm 同步完毕"
 
           # 备份 refresh_token

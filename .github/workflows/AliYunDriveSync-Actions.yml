@@ -39,6 +39,20 @@ jobs:
             -e REFRESH_TOKEN=$ALIYUNDRIVE_REFRESH_TOKEN \
             messense/aliyundrive-webdav /usr/bin/aliyundrive-webdav --auto-index --workdir /etc/aliyundrive-webdav --no-trash
 
+      - name: Wait for WebDAV
+        run: |
+          echo "等待 WebDAV 启动..."
+          for i in {1..30}; do
+            if curl -s --head --fail http://127.0.0.1:8080/; then
+              echo "WebDAV 已启动"
+              exit 0
+            fi
+            echo "等待中 ($i)..."
+            sleep 2
+          done
+          echo "WebDAV 启动失败"
+          exit 1
+
       - name: Rclone-Run
         run: |
           # Rclone-Run

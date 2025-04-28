@@ -58,6 +58,8 @@ jobs:
 
           #echo "开始去重"
           #rclone dedupe --dedupe-mode newest webdav:
+
+          rclone lsf webdav:/Nas_Backup --dirs-only -R | sort | uniq -d
           
           #rclone sync -v sharepoint_minjue_chenguo:/Nas_Backup webdav:/Nas_Backup
           rclone sync -v --update --checksum sharepoint_minjue_chenguo:/Nas_Backup webdav:/Nas_Backup

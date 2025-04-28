@@ -56,10 +56,11 @@ jobs:
           echo "更改时区"
           sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-          echo "开始去重"
-          rclone dedupe --dedupe-mode newest webdav:
+          #echo "开始去重"
+          #rclone dedupe --dedupe-mode newest webdav:
           
-          rclone sync -v sharepoint_minjue_chenguo:/Nas_Backup webdav:/Nas_Backup
+          #rclone sync -v sharepoint_minjue_chenguo:/Nas_Backup webdav:/Nas_Backup
+          rclone sync -v --update --checksum sharepoint_minjue_chenguo:/Nas_Backup webdav:/Nas_Backup
           echo "阿里云盘NAS同步完毕"
           rclone copyto /etc/aliyundrive-webdav/refresh_token outlook_com:/aliyunpan/refresh_vip_token
           echo "阿里云盘refresh-token备份完毕"

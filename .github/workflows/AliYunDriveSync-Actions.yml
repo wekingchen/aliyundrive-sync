@@ -62,22 +62,22 @@ jobs:
           #rclone dedupe --dedupe-mode newest webdav:
           
           echo "执行 rclone 同步任务..."
-          rclone sync -v pikpak:Video/public webdav:/public
+          rclone sync -v pikpak:Video/public alipan_official:/public
           echo "阿里云盘 public 同步完毕"
 
-          rclone sync -v pikpak:Video/complete webdav:/complete
+          rclone sync -v pikpak:Video/complete alipan_official:/complete
           echo "阿里云盘 complete 同步完毕"
 
-          rclone sync -v pikpak:Video/Movies webdav:/Movies
+          rclone sync -v pikpak:Video/Movies alipan_official:/Movies
           echo "阿里云盘 Movies 同步完毕"
 
-          rclone sync -v pikpak:Video/Kids webdav:/Kids
+          rclone sync -v pikpak:Video/Kids alipan_official:/Kids
           echo "阿里云盘 Kids 同步完毕"
 
-          rclone sync -v pikpak:Video/ping webdav:/ping
+          rclone sync -v pikpak:Video/ping alipan_official:/ping
           echo "阿里云盘 ping 同步完毕"
 
-          rclone sync -v pikpak:Video/xm webdav:/xm
+          rclone sync -v pikpak:Video/xm alipan_official:/xm
           echo "阿里云盘 xm 同步完毕"
 
           # 备份 refresh_token

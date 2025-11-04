@@ -28,30 +28,30 @@ jobs:
           mkdir -p ~/.config/rclone
           echo "$RCLONE_CONFIG" > ~/.config/rclone/rclone.conf
 
-      - name: WebDAV-Run
-        env:
-          ALIYUNDRIVE_REFRESH_TOKEN: ${{ secrets.ALIYUNDRIVE_REFRESH_TOKEN }}
-          WEBDAV_AUTH_USER: ${{ secrets.WEBDAV_AUTH_USER }}
-          WEBDAV_AUTH_PASSWORD: ${{ secrets.WEBDAV_AUTH_PASSWORD }}
-        run: |
-          docker run -d --name=aliyundrive-webdav --restart=unless-stopped -p 8080:8080 \
-            -v /etc/aliyundrive-webdav/:/etc/aliyundrive-webdav/ \
-            -e REFRESH_TOKEN=$ALIYUNDRIVE_REFRESH_TOKEN \
-            messense/aliyundrive-webdav /usr/bin/aliyundrive-webdav --auto-index --workdir /etc/aliyundrive-webdav --no-trash
+      # - name: WebDAV-Run
+      #   env:
+      #     ALIYUNDRIVE_REFRESH_TOKEN: ${{ secrets.ALIYUNDRIVE_REFRESH_TOKEN }}
+      #     WEBDAV_AUTH_USER: ${{ secrets.WEBDAV_AUTH_USER }}
+      #     WEBDAV_AUTH_PASSWORD: ${{ secrets.WEBDAV_AUTH_PASSWORD }}
+      #   run: |
+      #     docker run -d --name=aliyundrive-webdav --restart=unless-stopped -p 8080:8080 \
+      #       -v /etc/aliyundrive-webdav/:/etc/aliyundrive-webdav/ \
+      #       -e REFRESH_TOKEN=$ALIYUNDRIVE_REFRESH_TOKEN \
+      #       messense/aliyundrive-webdav /usr/bin/aliyundrive-webdav --auto-index --workdir /etc/aliyundrive-webdav --no-trash
 
-      - name: Wait for WebDAV
-        run: |
-          echo "等待 WebDAV 启动..."
-          for i in {1..30}; do
-            if curl -s --head --fail http://127.0.0.1:8080/; then
-              echo "WebDAV 已启动"
-              exit 0
-            fi
-            echo "等待中 ($i)..."
-            sleep 2
-          done
-          echo "WebDAV 启动失败"
-          exit 1
+      # - name: Wait for WebDAV
+      #   run: |
+      #     echo "等待 WebDAV 启动..."
+      #     for i in {1..30}; do
+      #       if curl -s --head --fail http://127.0.0.1:8080/; then
+      #         echo "WebDAV 已启动"
+      #         exit 0
+      #       fi
+      #       echo "等待中 ($i)..."
+      #       sleep 2
+      #     done
+      #     echo "WebDAV 启动失败"
+      #     exit 1
 
       - name: Rclone-Run
         run: |
